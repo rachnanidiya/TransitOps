@@ -1,16 +1,13 @@
-from flask import Flask, render_template
-from models import db
+import os
+from server.app import create_app
 
-app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///transitops.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)  
-@app.route('/')
-def dashboard():
-    return "<h1>TransitOps Server is Running!</h1>"
+# Create the Flask application using the application factory
+app = create_app()
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+    # Get port from environment variable or default to 5000
+    port = int(os.environ.get('PORT', 5000))
+    
+    # Run the application
+    # debug=True allows for auto-reloading when code changes
+    app.run(host='127.0.0.1', port=port, debug=True)

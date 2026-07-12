@@ -1,108 +1,118 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 db = SQLAlchemy()
-# Initialize the database instance
-db = SQLAlchemy()
 
-class Role(db.Model):
-    __tablename__ = 'roles'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False) # e.g., Fleet Manager, Driver, Safety Officer, Financial Analyst
-    
-    # Relationship
-    users = db.relationship('User', backref='role', lazy=True)
 
 class User(db.Model):
     __tablename__ = 'users'
-    
+
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
-    
-    # Foreign Key connecting to the Roles table
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    role = db.Column(db.String(50), nullable=False)  # fleet_manager, dispatcher, safety_officer, financial_analyst
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
 
 class Vehicle(db.Model):
     __tablename__ = 'vehicles'
-    
+
     id = db.Column(db.Integer, primary_key=True)
-    reg_number = db.Column(db.String(20), unique=True, nullable=False)
-    capacity_kg = db.Column(db.Float, nullable=False)
-    odometer = db.Column(db.Float, default=0.0)
-    status = db.Column(db.String(20), default='Available') # Available, On Trip, In Shop, Retired
-    acquisition_cost = db.Column(db.Float, nullable=False) # Critical for the Vehicle ROI calculation
-    
-    # Relationships
-    trips = db.relationship('Trip', backref='vehicle', lazy=True)
-    maintenance_logs = db.relationship('MaintenanceLog', backref='vehicle', lazy=True)
-    fuel_logs = db.relationship('FuelLog', backref='vehicle', lazy=True)
-    expenses = db.relationship('Expense', backref='vehicle', lazy=True)
+    registration_number = db.Column(db.String(50), unique=True, nullable=False)
+    name_model = db.Column(db.String(100), nullable=False)
+    type = db.Column(db.String(20), nullable=False)  # Truck, Van, Bus, Car
+    max_load_capacity = db.Column(db.Float, nullable=False)
+    odometer = db.Column(db.Float, default=0)
+    acquisition_cost = db.Column(db.Float, default=0)
+    status = db.Column(db.String(20), default='Available')  # Available, On Trip, In Shop, Retired
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
 
 class Driver(db.Model):
     __tablename__ = 'drivers'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     license_number = db.Column(db.String(50), unique=True, nullable=False)
-    license_expiry = db.Column(db.Date, nullable=False)
-    safety_score = db.Column(db.Float, default=100.0)
-    status = db.Column(db.String(20), default='Available') # Available, On Trip, Off Duty, Suspended
-    
-    # Relationships
-    trips = db.relationship('Trip', backref='driver', lazy=True)
+    license_category = db.Column(db.String(20), nullable=False)
+    license_expiry_date = db.Column(db.Date, nullable=False)
+    contact_number = db.Column(db.String(20))
+    safety_score = db.Column(db.Float, default=100)
+    status = db.Column(db.String(20), default='Available')  # Available, On Trip, Off Duty, Suspended
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
 
 class Trip(db.Model):
     __tablename__ = 'trips'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     source = db.Column(db.String(100), nullable=False)
     destination = db.Column(db.String(100), nullable=False)
-    cargo_weight = db.Column(db.Float, nullable=False)
-    revenue = db.Column(db.Float, nullable=False, default=0.0) # Needed for financial metrics
-    status = db.Column(db.String(20), default='Draft') # Draft, Dispatched, Completed, Cancelled
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Foreign Keys
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
     driver_id = db.Column(db.Integer, db.ForeignKey('drivers.id'), nullable=False)
-    
-    # Relationship to general expenses tied directly to this trip (e.g., tolls)
-    expenses = db.relationship('Expense', backref='trip', lazy=True)
+    cargo_weight = db.Column(db.Float, nullable=False)
+    planned_distance = db.Column(db.Float, nullable=False)
+    actual_distance = db.Column(db.Float)
+    fuel_consumed = db.Column(db.Float)
+    revenue = db.Column(db.Float, default=0)
+    status = db.Column(db.String(20), default='Draft')  # Draft, Dispatched, Completed, Cancelled
+    dispatched_at = db.Column(db.DateTime)
+    completed_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relationships
+    vehicle = db.relationship('Vehicle', foreign_keys=[vehicle_id])
+    driver = db.relationship('Driver', foreign_keys=[driver_id])
+
 
 class MaintenanceLog(db.Model):
     __tablename__ = 'maintenance_logs'
-    
+
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(255), nullable=False)
-    cost = db.Column(db.Float, nullable=False)
-    date_logged = db.Column(db.DateTime, default=datetime.utcnow)
-    status = db.Column(db.String(20), default='Open') # Open (vehicle in shop), Closed (vehicle available)
-    
-    # Foreign Key
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
+    type = db.Column(db.String(50), nullable=False)  # Oil Change, Tire Replacement, Engine Repair, General Service, etc.
+    description = db.Column(db.Text)
+    cost = db.Column(db.Float, default=0)
+    status = db.Column(db.String(20), default='Active')  # Active, Completed
+    scheduled_date = db.Column(db.Date)
+    completed_date = db.Column(db.Date)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relationship
+    vehicle = db.relationship('Vehicle', foreign_keys=[vehicle_id])
+
 
 class FuelLog(db.Model):
     __tablename__ = 'fuel_logs'
-    
+
     id = db.Column(db.Integer, primary_key=True)
-    liters_filled = db.Column(db.Float, nullable=False)
-    cost = db.Column(db.Float, nullable=False)
-    date_logged = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Foreign Key
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
+    trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=True)
+    liters = db.Column(db.Float, nullable=False)
+    cost = db.Column(db.Float, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    odometer_reading = db.Column(db.Float)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relationships
+    vehicle = db.relationship('Vehicle', foreign_keys=[vehicle_id])
+    trip = db.relationship('Trip', foreign_keys=[trip_id])
+
 
 class Expense(db.Model):
     __tablename__ = 'expenses'
-    
+
     id = db.Column(db.Integer, primary_key=True)
-    expense_type = db.Column(db.String(50), nullable=False) # e.g., Toll, Parking, Driver Meals
-    amount = db.Column(db.Float, nullable=False)
-    date_logged = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Foreign Keys
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
-    trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=True) # Nullable because some expenses aren't tied to a specific trip
+    trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=True)
+    category = db.Column(db.String(50), nullable=False)  # Fuel, Maintenance, Tolls, Parking, Insurance, Other
+    description = db.Column(db.Text)
+    amount = db.Column(db.Float, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relationships
+    vehicle = db.relationship('Vehicle', foreign_keys=[vehicle_id])
+    trip = db.relationship('Trip', foreign_keys=[trip_id])

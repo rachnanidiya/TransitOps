@@ -107,13 +107,13 @@ const Trips: React.FC = () => {
     }
   };
 
-  if (isLoading) return <div className="text-center py-12">Loading trips...</div>;
-  if (error) return <div className="text-center py-12 text-red-600">Error loading trips</div>;
+  if (isLoading) return <div className="text-center py-12 text-white/70 animate-fade-in-up">Loading trips...</div>;
+  if (error) return <div className="text-center py-12 text-danger animate-fade-in-up">Error loading trips</div>;
 
   return (
     <div className="p-6">
       <div className="mb-6 flex justify-between items-wrap">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="text-2xl font-bold text-white">
           Trip Dispatching
         </h1>
         <div className="flex space-x-3">
@@ -122,24 +122,24 @@ const Trips: React.FC = () => {
               setSelectedTrip(null);
               setIsEditing(false);
             }}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+            className="px-4 py-2 bg-dark-primary text-white rounded-md hover:bg-dark-primary/90 transition-colors duration-300 hover:shadow-glass-hover"
           >
-            <Plus className="mr-2" /> Add Trip
+            <Plus className="mr-2 h-4 w-4" /> Add Trip
           </button>
         </div>
       </div>
 
       {/* Trip Form Modal */}
       {selectedTrip !== null && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl p-6">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="glass-panel dark bg-white/10 backdrop-blur-lg border border-border/20 rounded-xl p-6 w-full max-w-2xl">
             <div className="flex justify-between items-start mb-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+              <h2 className="text-xl font-bold text-white">
                 {isEditing ? 'Edit Trip' : 'Add Trip'}
               </h2>
               <button
                 onClick={handleCancel}
-                className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                className="text-white/60 hover:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -160,7 +160,7 @@ const Trips: React.FC = () => {
             }} className="space-y-6">
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Source
                   </label>
                   <input
@@ -168,12 +168,12 @@ const Trips: React.FC = () => {
                     name="source"
                     required
                     defaultValue={isEditing ? selectedTrip?.source || '' : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Destination
                   </label>
                   <input
@@ -181,21 +181,21 @@ const Trips: React.FC = () => {
                     name="destination"
                     required
                     defaultValue={isEditing ? selectedTrip?.destination || '' : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
                   />
                 </div>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Vehicle
                   </label>
                   <select
                     name="vehicle_id"
                     required
                     defaultValue={isEditing ? selectedTrip?.vehicle_id || '' : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
                   >
                     <option value="">Select Vehicle</option>
                     {/* In a real app, we'd fetch vehicles here */}
@@ -203,14 +203,14 @@ const Trips: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Driver
                   </label>
                   <select
                     name="driver_id"
                     required
                     defaultValue={isEditing ? selectedTrip?.driver_id || '' : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
                   >
                     <option value="">Select Driver</option>
                     {/* In a real app, we'd fetch drivers here */}
@@ -220,7 +220,7 @@ const Trips: React.FC = () => {
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Cargo Weight (kg)
                   </label>
                   <input
@@ -229,12 +229,12 @@ const Trips: React.FC = () => {
                     required
                     min="0"
                     defaultValue={isEditing ? selectedTrip?.cargo_weight || 0 : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Planned Distance (km)
                   </label>
                   <input
@@ -243,14 +243,14 @@ const Trips: React.FC = () => {
                     required
                     min="0"
                     defaultValue={isEditing ? selectedTrip?.planned_distance || 0 : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
                   />
                 </div>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Revenue ($)
                   </label>
                   <input
@@ -260,19 +260,19 @@ const Trips: React.FC = () => {
                     min="0"
                     step="0.01"
                     defaultValue={isEditing ? selectedTrip?.revenue || 0 : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-dark-primary focus:border-dark-primary"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Status
                   </label>
                   <select
                     name="status"
                     required
                     defaultValue={isEditing ? selectedTrip?.status || '' : TRIP_STATUSES[0]}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
                   >
                     {TRIP_STATUSES.map(status => (
                       <option key={status} value={status}>{status}</option>
@@ -284,26 +284,26 @@ const Trips: React.FC = () => {
               {/* Date fields */}
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Dispatched At
                   </label>
                   <input
                     type="datetime-local"
                     name="dispatched_at"
                     defaultValue={isEditing ? selectedTrip?.dispatched_at ? new Date(selectedTrip.dispatched_at).toISOString().slice(0, 16) : '' : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-dark-primary focus:border-dark-primary"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white/70 mb-1">
                     Completed At
                   </label>
                   <input
                     type="datetime-local"
                     name="completed_at"
                     defaultValue={isEditing ? selectedTrip?.completed_at ? new Date(selectedTrip.completed_at).toISOString().slice(0, 16) : '' : ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
+                    className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-dark-primary focus:border-dark-primary"
                   />
                 </div>
               </div>
@@ -312,18 +312,18 @@ const Trips: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  className="px-4 py-2 bg-dark-surface text-white/60 rounded-md hover:bg-dark-surface/30"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={createMutation.isPending || updateMutation.isPending}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
+                  className="px-4 py-2 bg-dark-primary text-white rounded-md hover:bg-dark-primary/90 transition-colors duration-300 disabled:opacity-50"
                 >
                   {isEditing ? 'Update Trip' : 'Create Trip'}
                   {(createMutation.isPending || updateMutation.isPending) && (
-                    <span className="ml-2 animate-spin h-4 w-4 border-2 border-white rounded-full"></span>
+                    <span className="ml-2 h-4 w-4 border-2 border-white/20 rounded-full animate-spin"></span>
                   )}
                 </button>
               </div>
@@ -333,84 +333,84 @@ const Trips: React.FC = () => {
       )}
 
       {/* Trips List with Actions */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+      <div className="glass-panel dark bg-white/5 backdrop-blur-lg border border-border/10 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-700">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-dark-bg/20">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">
                   Route
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">
                   Vehicle
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">
                   Driver
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">
                   Cargo Weight
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">
                   Planned Distance
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">
                   Revenue
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-border">
               {trips.map((trip: any) => (
-                <tr key={trip.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                    {trip.source} → {trip.destination}
+                <tr key={trip.id} className="hover:bg-dark-bg/10 transition-colors duration-200">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+                    {trip.source} &rarr; {trip.destination}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
                     {/* In a real app, we'd show vehicle name */}
                     Vehicle #{trip.vehicle_id || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
                     {/* In a real app, we'd show driver name */}
                     Driver #{trip.driver_id || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
                     {trip.cargo_weight?.toLocaleString()} kg
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
                     {trip.planned_distance?.toLocaleString()} km
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${trip.status === 'Draft' ? 'bg-yellow-100 text-yellow-800' : trip.status === 'Dispatched' ? 'bg-blue-100 text-blue-800' : trip.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${trip.status === 'Draft' ? 'bg-dark-warning/20 text-dark-warning' : trip.status === 'Dispatched' ? 'bg-dark-info/20 text-dark-info' : trip.status === 'Completed' ? 'bg-dark-success/20 text-dark-success' : 'bg-dark-danger/20 text-dark-danger'}`}>
                       {trip.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80">
                     ${trip.revenue?.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-3">
                       {trip.status === 'Draft' && (
                         <>
                           <button
                             onClick={() => handleDispatch(trip.id)}
-                            className="px-3 py-1 bg-indigo-600 text-white text-xs rounded-md hover:bg-indigo-700"
+                            className="px-3 py-1 bg-dark-primary text-white text-xs rounded-md hover:bg-dark-primary/90"
                           >
                             Dispatch
                           </button>
                           <button
                             onClick={() => handleEdit(trip)}
-                            className="px-3 py-1 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200 text-xs"
+                            className="px-3 py-1 text-dark-primary hover:text-white dark:hover:text-dark-primary/90 text-xs"
                           >
                             Edit
                           </button>
                           <button
                             onClick={() => handleDelete(trip.id)}
-                            className="px-3 py-1 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200 text-xs"
+                            className="px-3 py-1 text-danger hover:text-dark-danger/90 text-xs"
                           >
                             Delete
                           </button>
@@ -420,19 +420,19 @@ const Trips: React.FC = () => {
                         <>
                           <button
                             onClick={() => handleComplete(trip.id)}
-                            className="px-3 py-1 bg-green-600 text-white text-xs rounded-md hover:bg-green-700"
+                            className="px-3 py-1 bg-dark-success text-white text-xs rounded-md hover:bg-dark-success/90"
                           >
                             Complete
                           </button>
                           <button
                             onClick={() => handleEdit(trip)}
-                            className="px-3 py-1 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200 text-xs"
+                            className="px-3 py-1 text-dark-primary hover:text-white dark:hover:text-dark-primary/90 text-xs"
                           >
                             Edit
                           </button>
                           <button
                             onClick={() => handleDelete(trip.id)}
-                            className="px-3 py-1 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200 text-xs"
+                            className="px-3 py-1 text-danger hover:text-dark-danger/90 text-xs"
                           >
                             Delete
                           </button>
@@ -441,7 +441,7 @@ const Trips: React.FC = () => {
                       {(trip.status === 'Completed' || trip.status === 'Cancelled') && (
                         <button
                           onClick={() => handleEdit(trip)}
-                          className="px-3 py-1 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200 text-xs"
+                          className="px-3 py-1 text-dark-primary hover:text-white dark:hover:text-dark-primary/90 text-xs"
                         >
                           Edit
                         </button>
@@ -453,7 +453,7 @@ const Trips: React.FC = () => {
 
               {trips.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={8} className="px-6 py-4 text-center text-white/50">
                     No trips found
                   </td>
                 </tr>

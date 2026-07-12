@@ -31,54 +31,63 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-dark-bg">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800">TransitOps</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-white">TransitOps</h1>
+          <p className="text-white/80">
             Sign in to your transport operations dashboard
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium text-white/70 mb-1">
               Email address
             </label>
             <input
               id="email"
               type="email"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-white/70 mb-1">
               Password
             </label>
             <input
               id="password"
               type="password"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-lg border border-border/50 bg-dark-bg/60 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus-ring-dark-primary focus:border-dark-primary"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           {error && (
-            <p className="text-sm text-red-600">{error}</p>
+            <p className="text-sm text-danger">{error}</p>
           )}
           <div className="pt-2">
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full flex justify-center py-3 px-4 text-sm font-medium text-white bg-dark-primary hover:bg-dark-primary/90 transition-all duration-300 rounded-lg"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>
+        <div className="text-center text-white/60 text-sm mt-4">
+          <p>Demo credentials:</p>
+          <p className="mt-1">
+            Fleet Manager: fleet.manager@transitops.com / fleet123
+          </p>
+          <p>
+            Dispatcher: dispatcher@transitops.com / dispatch123
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -1,1 +1,180 @@
 @import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* Custom CSS for glassmorphism and enhanced effects */
+.glass-panel {
+  @apply bg-dark-surface/80 backdrop-blur-sm border border-white/10 shadow-glass;
+}
+
+.glass-panel:hover {
+  @apply shadow-glass-hover;
+}
+
+.glass-panel-dark {
+  @apply bg-dark-bg/80 backdrop-blur-sm border border-white/5 shadow-glass;
+}
+
+.glass-panel-dark:hover {
+  @apply shadow-glass-hover;
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulseSoft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulseSoft 3s ease-in-out infinite;
+}
+
+/* Table styles */
+.data-table th {
+  @apply bg-dark-surface/50 text-xs font-medium tracking-wider text-muted uppercase;
+}
+
+.data-table td {
+  @apply bg-dark-bg/50 border-b border-border;
+}
+
+.data-table tr:hover td {
+  @apply bg-dark-surface/30;
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-dark-primary text-white hover:bg-dark-primary/90 transition-colors duration-300
+         px-4 py-2 rounded-lg font-medium shadow-none hover:shadow-md;
+}
+
+.btn-secondary {
+  @apply bg-dark-surface/60 text-white hover:bg-dark-surface/80 transition-colors duration-300
+         px-4 py-2 rounded-lg font-medium border border-border/50 hover:border-none;
+}
+
+.btn-success {
+  @apply bg-dark-success text-white hover:bg-dark-success/90 transition-colors duration-300
+         px-4 py-2 rounded-lg font-medium;
+}
+
+.btn-danger {
+  @apply bg-danger text-white hover:bg-danger/90 transition-colors duration-300
+         px-4 py-2 rounded-lg font-medium;
+}
+
+/* Form styles */
+.input-field {
+  @apply w-full px-4 py-3 rounded-lg border border-border/50 bg-dark-bg/60
+         text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-dark-primary
+         focus:border-dark-primary transition-all duration-300;
+}
+
+.select-field {
+  @apply w-full px-4 py-3 rounded-lg border border-border/50 bg-dark-bg/60
+         text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-dark-primary
+         focus:border-dark-primary transition-all duration-300 appearance-none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23fff"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+}
+
+/* Dashboard cards */
+.dashboard-card {
+  @apply bg-dark-surface/80 backdrop-blur-sm border border-white/10 rounded-xl p-6
+         hover:shadow-glass-hover transition-all duration-500;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Sidebar styles */
+.sidebar-nav-link {
+  @apply flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300;
+}
+
+.sidebar-nav-link.active {
+  @apply bg-dark-primary/20 text-dark-primary border-l-4 border-dark-primary;
+}
+
+.sidebar-nav-link:hover {
+  @apply bg-dark-surface/30;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center;
+}
+
+.modal-content {
+  @apply bg-dark-surface/90 backdrop-blur-sm border border-white/10 rounded-xl
+         max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6;
+}
+
+/* Toast notifications */
+.toast {
+  @apply fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white font-medium
+         z-50 flex items-center space-x-3;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.toast-success {
+  @apply bg-dark-success/90;
+}
+
+.toast-error {
+  @apply bg-danger/90;
+}
+
+.toast-info {
+  @apply bg-dark-info/90;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-bg/50;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-surface/60 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-dark-surface/80;
+}

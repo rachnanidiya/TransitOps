@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import api from '../../services/api';
-import { Wrench, Truck, DollarSign, Edit2, Trash2, Plus, Check, X, Calendar, CheckCircle } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 
 // Maintenance types and statuses from the backend
 const MAINTENANCE_TYPES = ['Oil Change', 'Tire Replacement', 'Engine Repair', 'General Service', 'Brake Service', 'Transmission Service'];
@@ -131,17 +131,17 @@ const Maintenance: React.FC = () => {
             <form onSubmit={(e) => {
               e.preventDefault();
               const formData = new FormData(e.target as HTMLFormElement);
-              const maintenanceData = Object.fromEntries(formData.entries());
+              const maintenanceData = Object.fromEntries(formData.entries()) as Record<string, any>;
 
               // Convert date and numeric fields
               if (maintenanceData.scheduled_date) {
-                maintenanceData.scheduled_date = maintenanceData.scheduled_date;
+                maintenanceData.scheduled_date = maintenanceData.scheduled_date as string;
               }
               if (maintenanceData.completed_date) {
-                maintenanceData.completed_date = maintenanceData.completed_date;
+                maintenanceData.completed_date = maintenanceData.completed_date as string;
               }
               if (maintenanceData.cost) {
-                maintenanceData.cost = parseFloat(maintenanceData.cost);
+                maintenanceData.cost = parseFloat(maintenanceData.cost as string);
               }
 
               handleSave(maintenanceData);
@@ -185,8 +185,8 @@ const Maintenance: React.FC = () => {
                     required
                     defaultValue={isEditing ? selectedMaintenance?.vehicle_id || '' : ''}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-                  status("placeholder="Select Vehicle")>
-          <Options values={[]} /> // In a real app, we'd fetch vehicles here
+                  >
+                    <option value="" disabled>Select Vehicle</option>
                     </select>
                   </div>
                 </div>
@@ -245,17 +245,16 @@ const Maintenance: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={createMutation.isLoading || updateMutation.isLoading}
+                    disabled={createMutation.isPending || updateMutation.isPending}
                     className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                   >
                     {isEditing ? 'Update Maintenance' : 'Create Maintenance'}
-                    {createMutation.isLoading || updateMutation.isLoading && (
+                    {(createMutation.isPending || updateMutation.isPending) && (
                       <span className="ml-2 animate-spin h-4 w-4 border-2 border-white rounded-full"></span>
                     )}
                   </button>
                 </div>
               </form>
-            </div>
           </div>
         </div>
       )}
@@ -393,7 +392,7 @@ const Maintenance: React.FC = () => {
 
               {maintenanceRecords.length === 0 && (
                 <tr>
-                  <td colspan="8" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={8} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                     No maintenance records found
                   </td>
                 </tr>

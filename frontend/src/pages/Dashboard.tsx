@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../services/api';
 import {
   Truck,
-  TruckOff,
+  AlertTriangle,
   Users,
   ChartLine,
   TrendingUp,
@@ -13,17 +13,22 @@ import {
   Gauge
 } from 'lucide-react';
 
+const Icons: any = {
+  Truck, AlertTriangle, Users, ChartLine, TrendingUp, TrendingDown, PiggyBank, Calendar, MapPin, Gauge
+};
+
 const fetchDashboardStats = async () => {
   const response = await api.get('/reports/dashboard');
   return response.data;
 };
 
-const StatCard = ({ title, value, icon, trend, trendLabel = '' }) => {
+const StatCard = ({ title, value, icon, trend, trendLabel = '' }: any) => {
+  const IconComponent = Icons[icon] || MapPin;
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
-          <i className={icon} className="text-xl text-indigo-500"></i>
+          <IconComponent className="h-6 w-6 text-indigo-500" />
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">{title}</h3>
         </div>
         {trend !== null && (
@@ -41,7 +46,7 @@ const StatCard = ({ title, value, icon, trend, trendLabel = '' }) => {
 };
 
 const Dashboard: React.FC = () => {
-  const { data, isLoading, error, isError } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['dashboard'],
     queryFn: fetchDashboardStats,
   });
@@ -120,10 +125,10 @@ const Dashboard: React.FC = () => {
         <StatCard
           title="Fuel Efficiency"
           value={`${stats.fuelEfficiency} MPG`}
-          icon="TruckOff"
+          icon="AlertTriangle"
           trend={-1}
           trendLabel="vs last month"
-        }
+        />
         <StatCard
           title="Revenue per Trip"
           value={`$${(stats.totalRevenue / Math.max(stats.activeTrips, 1)).toFixed(2)}`}

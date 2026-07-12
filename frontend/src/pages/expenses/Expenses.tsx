@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import api from '../../services/api';
-import { PiggyBank, Truck, Droplet, Edit2, Trash2, Plus, Check, X, Calendar, DollarSign, CreditCard } from 'lucide-react';
+import { Edit2, Trash2, Plus, X } from 'lucide-react';
 
 // Expense categories from the backend
 const EXPENSE_CATEGORIES = ['Fuel', 'Maintenance', 'Tolls', 'Parking', 'Insurance', 'Other'];
@@ -115,14 +115,14 @@ const Expenses: React.FC = () => {
             <form onSubmit={(e) => {
               e.preventDefault();
               const formData = new FormData(e.target as HTMLFormElement);
-              const expenseData = Object.fromEntries(formData.entries());
+              const expenseData = Object.fromEntries(formData.entries()) as Record<string, any>;
 
               // Convert date and numeric fields
               if (expenseData.date) {
-                expenseData.date = expenseData.date;
+                expenseData.date = expenseData.date as string;
               }
               if (expenseData.amount) {
-                expenseData.amount = parseFloat(expenseData.amount);
+                expenseData.amount = parseFloat(expenseData.amount as string);
               }
 
               handleSave(expenseData);
@@ -212,11 +212,11 @@ const Expenses: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={createMutation.isLoading || updateMutation.isLoading}
+                  disabled={createMutation.isPending || updateMutation.isPending}
                   className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                 >
                   {isEditing ? 'Update Expense' : 'Create Expense'}
-                  {createMutation.isLoading || updateMutation.isLoading && (
+                  {(createMutation.isPending || updateMutation.isPending) && (
                     <span className="ml-2 animate-spin h-4 w-4 border-2 border-white rounded-full"></span>
                   )}
                 </button>
@@ -311,7 +311,7 @@ const Expenses: React.FC = () => {
 
               {expenses.length === 0 && (
                 <tr>
-                  <td colspan="6" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={6} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                     No expenses found
                   </td>
                 </tr>

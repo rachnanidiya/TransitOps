@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import api from '../../services/api';
-import { Truck, TruckOff, Edit2, Trash2, Plus, Check, X } from 'lucide-react';
+import { Edit2, Trash2, Plus, X } from 'lucide-react';
 
 // Vehicle types and statuses from the backend
 const VEHICLE_TYPES = ['Truck', 'Van', 'Bus', 'Car'];
@@ -116,12 +116,12 @@ const Vehicles: React.FC = () => {
               // Form data would be handled by React Hook Form in a real implementation
               // For now, we'll simulate with basic validation
               const formData = new FormData(e.target as HTMLFormElement);
-              const vehicleData = Object.fromEntries(formData.entries());
+              const vehicleData = Object.fromEntries(formData.entries()) as Record<string, any>;
 
               // Convert numeric fields
-              if (vehicleData.max_load_capacity) vehicleData.max_load_capacity = parseFloat(vehicleData.max_load_capacity);
-              if (vehicleData.acquisition_cost) vehicleData.acquisition_cost = parseFloat(vehicleData.acquisition_cost);
-              if (vehicleData.odometer) vehicleData.odometer = parseFloat(vehicleData.odometer);
+              if (vehicleData.max_load_capacity) vehicleData.max_load_capacity = parseFloat(vehicleData.max_load_capacity as string);
+              if (vehicleData.acquisition_cost) vehicleData.acquisition_cost = parseFloat(vehicleData.acquisition_cost as string);
+              if (vehicleData.odometer) vehicleData.odometer = parseFloat(vehicleData.odometer as string);
 
               handleSave(vehicleData);
             }} className="space-y-4">
@@ -240,11 +240,11 @@ const Vehicles: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={createMutation.isLoading || updateMutation.isLoading}
+                  disabled={createMutation.isPending || updateMutation.isPending}
                   className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                 >
                   {isEditing ? 'Update Vehicle' : 'Create Vehicle'}
-                  {createMutation.isLoading || updateMutation.isLoading && (
+                  {(createMutation.isPending || updateMutation.isPending) && (
                     <span className="ml-2 animate-spin h-4 w-4 border-2 border-white rounded-full"></span>
                   )}
                 </button>
@@ -364,7 +364,7 @@ const Vehicles: React.FC = () => {
 
               {vehicles.length === 0 && (
                 <tr>
-                  <td colspan="8" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={8} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                     No vehicles found
                   </td>
                 </tr>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import api from '../../services/api';
-import { Users, User, Edit2, Trash2, Plus, Check, X, Calendar, Shield, Activity } from 'lucide-react';
+import { Edit2, Trash2, Plus, X } from 'lucide-react';
 
 // Driver license categories and statuses from the backend
 const LICENSE_CATEGORIES = ['A', 'B', 'C', 'D', 'E'];
@@ -114,11 +114,11 @@ const Drivers: React.FC = () => {
             <form onSubmit={(e) => {
               e.preventDefault();
               const formData = new FormData(e.target as HTMLFormElement);
-              const driverData = Object.fromEntries(formData.entries());
+              const driverData = Object.fromEntries(formData.entries()) as Record<string, any>;
 
               // Convert date
               if (driverData.license_expiry_date) {
-                driverData.license_expiry_date = driverData.license_expiry_date;
+                driverData.license_expiry_date = driverData.license_expiry_date as string;
               }
 
               handleSave(driverData);
@@ -234,11 +234,11 @@ const Drivers: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={createMutation.isLoading || updateMutation.isLoading}
+                  disabled={createMutation.isPending || updateMutation.isPending}
                   className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                 >
                   {isEditing ? 'Update Driver' : 'Create Driver'}
-                  {createMutation.isLoading || updateMutation.isLoading && (
+                  {(createMutation.isPending || updateMutation.isPending) && (
                     <span className="ml-2 animate-spin h-4 w-4 border-2 border-white rounded-full"></span>
                   )}
                 </button>
@@ -359,7 +359,7 @@ const Drivers: React.FC = () => {
 
               {drivers.length === 0 && (
                 <tr>
-                  <td colspan="8" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={8} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                     No drivers found
                   </td>
                 </tr>

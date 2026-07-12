@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../services/api';
-import { ChartBar, ChartPie, ChartLine, Truck, Users, MapPin, PiggyBank, Calendar, DollarSign, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 const Reports: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   // Fetch different reports
-  const { data: dashboardData, isLoading: dashboardLoading } = useQuery({
+  const { data: dashboardData } = useQuery({
     queryKey: ['dashboard'],
     queryFn: async () => {
       const response = await api.get('/reports/dashboard');
@@ -123,7 +123,7 @@ const Reports: React.FC = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-300">Active Drivers:</span>
-                  <span className="font-medium text-green-600">{dashboardData?.active_drivers || 0}</span
+                  <span className="font-medium text-green-600">{dashboardData?.active_drivers || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-300">Total Trips:</span>
@@ -229,7 +229,7 @@ const Reports: React.FC = () => {
                       {Object.entries(fuelEfficiencyData?.mpg_by_type || {}).map(([type, mpg]) => (
                         <div key={type} className="flex justify-between">
                           <span className="text-gray-600 dark:text-gray-300 capitalize">{type}:</span>
-                          <span className="font-medium">{mpg?.toFixed(1) || 0} MPG</span>
+                          <span className="font-medium">{(mpg as number)?.toFixed(1) || 0} MPG</span>
                         </div>
                       ))}
                     </div>
@@ -290,7 +290,7 @@ const Reports: React.FC = () => {
                           <div key={type} className="flex justify-between">
                             <span className="text-gray-600 dark:text-gray-300 capitalize">{type}:</span>
                             <span className="font-medium">
-                              ${(utilization || 0).toFixed(1)}%
+                              ${((utilization as number) || 0).toFixed(1)}%
                             </span>
                           </div>
                         ))}
@@ -410,7 +410,7 @@ const Reports: React.FC = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                        {vehicleROIData?.vehicles?.map((vehicle: any, index: number) => (
+                        {vehicleROIData?.vehicles?.map((vehicle: any) => (
                           <tr key={vehicle.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                               #{vehicle.id}
@@ -442,7 +442,7 @@ const Reports: React.FC = () => {
 
                         {vehicleROIData?.vehicles?.length === 0 && (
                           <tr>
-                            <td colspan="7" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                            <td colSpan={7} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                               No vehicle data available
                             </td>
                           </tr>

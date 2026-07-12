@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import api from '../../services/api';
-import { MapPin, Truck, Users, Edit2, Trash2, Plus, Check, X, Calendar, DollarSign, AminoAcid } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 
 // Trip statuses from the backend
 const TRIP_STATUSES = ['Draft', 'Dispatched', 'Completed', 'Cancelled'];
@@ -148,14 +148,13 @@ const Trips: React.FC = () => {
             <form onSubmit={(e) => {
               e.preventDefault();
               const formData = new FormData(e.target as HTMLFormElement);
-              const tripData = Object.fromEntries(formData.entries());
+              const tripData = Object.fromEntries(formData.entries()) as Record<string, any>;
 
-              // Convert numeric fields
-              if (tripData.cargo_weight) tripData.cargo_weight = parseFloat(tripData.cargo_weight);
-              if (tripData.planned_distance) tripData.planned_distance = parseFloat(tripData.planned_distance);
-              if (tripData.actual_distance) tripData.actual_distance = parseFloat(tripData.actual_distance);
-              if (tripData.fuel_consumed) tripData.fuel_consumed = parseFloat(tripData.fuel_consumed);
-              if (tripData.revenue) tripData.revenue = parseFloat(tripData.revenue);
+              if (tripData.cargo_weight) tripData.cargo_weight = parseFloat(tripData.cargo_weight as string);
+              if (tripData.planned_distance) tripData.planned_distance = parseFloat(tripData.planned_distance as string);
+              if (tripData.actual_distance) tripData.actual_distance = parseFloat(tripData.actual_distance as string);
+              if (tripData.fuel_consumed) tripData.fuel_consumed = parseFloat(tripData.fuel_consumed as string);
+              if (tripData.revenue) tripData.revenue = parseFloat(tripData.revenue as string);
 
               handleSave(tripData);
             }} className="space-y-6">
@@ -319,11 +318,11 @@ const Trips: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={createMutation.isLoading || updateMutation.isLoading}
+                  disabled={createMutation.isPending || updateMutation.isPending}
                   className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                 >
                   {isEditing ? 'Update Trip' : 'Create Trip'}
-                  {createMutation.isLoading || updateMutation.isLoading && (
+                  {(createMutation.isPending || updateMutation.isPending) && (
                     <span className="ml-2 animate-spin h-4 w-4 border-2 border-white rounded-full"></span>
                   )}
                 </button>
@@ -454,7 +453,7 @@ const Trips: React.FC = () => {
 
               {trips.length === 0 && (
                 <tr>
-                  <td colspan="8" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={8} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                     No trips found
                   </td>
                 </tr>
